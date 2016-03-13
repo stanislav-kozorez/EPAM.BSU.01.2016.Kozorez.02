@@ -7,7 +7,9 @@ Deadline – 14.03.16, 16.00.
 Разработать unit-тесты для тестирования метода Ньютона вычисления корня n-ой степени числа (задание предыдущего дня).
 
 Ссылки на выполненное задание:
+
 https://github.com/stanislav-kozorez/EPAM.BSU.01.2016.Kozorez.01/commit/396bd23c6b34cb696f519776efcdf17f58ebcb8f
+
 https://github.com/stanislav-kozorez/EPAM.BSU.01.2016.Kozorez.01/commit/0db4293ec6e4f7d5bbbf1e874ef0e0113a7644f5
 
 Задание 2. 
