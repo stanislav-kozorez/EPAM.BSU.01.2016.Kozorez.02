@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{46207F6D-FAE7-49CD-A0B9-CF50E0974A67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.NUnitTests", "Logic.NUnitTests\Logic.NUnitTests.csproj", "{5F3F3CF1-EF18-4326-AC4D-D3B49105F84A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46207F6D-FAE7-49CD-A0B9-CF50E0974A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46207F6D-FAE7-49CD-A0B9-CF50E0974A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46207F6D-FAE7-49CD-A0B9-CF50E0974A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46207F6D-FAE7-49CD-A0B9-CF50E0974A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3F3CF1-EF18-4326-AC4D-D3B49105F84A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3F3CF1-EF18-4326-AC4D-D3B49105F84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3F3CF1-EF18-4326-AC4D-D3B49105F84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3F3CF1-EF18-4326-AC4D-D3B49105F84A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
