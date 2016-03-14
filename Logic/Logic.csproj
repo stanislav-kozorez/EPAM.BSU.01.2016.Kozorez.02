@@ -43,6 +43,8 @@
     <Compile Include="Task2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Task3\HexFormatter.cs" />
+    <Compile Include="Task4\Cusomer.cs" />
+    <Compile Include="Task4\CustomerExtentions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
