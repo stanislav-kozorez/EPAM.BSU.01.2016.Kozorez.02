@@ -23,11 +23,11 @@ namespace Logic.MSUnitTests
         }
 
         [TestMethod]
-        public void ToString_WithFormatString_ReturnedFormattedString()
+        public void ToString_WithNullFormatProvider_ReturnedFormattedString()
         {
             string expected = "MikeMike+(375) 348-572-35410 000,00 р.";
             Cusomer c = new Cusomer("Mike", 375348572354, 10000);
-            string actual = c.ToString("NNTR");
+            string actual = c.ToString("NNTR", null);
 
             Assert.AreEqual(expected, actual);
         }

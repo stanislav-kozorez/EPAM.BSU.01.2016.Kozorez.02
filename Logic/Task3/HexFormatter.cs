@@ -37,7 +37,7 @@ namespace Logic
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
             string hexFormat = string.Empty;
-            string resultFormat = string.Empty;
+            //string resultFormat = string.Empty;
             string prefix = string.Empty;
 
             if (!supportedTypes.Contains(arg.GetType()))
@@ -59,13 +59,13 @@ namespace Logic
             if (hexFormat == "H")
             {
                 prefix += "0X";
-                resultFormat = "{0:X}";
+                //resultFormat = "{0:X}";
             }
             else
                 if (hexFormat == "h")
                 {
                     prefix += "0x";
-                    resultFormat = "{0:x}";
+                    //resultFormat = "{0:x}";
                 }
                 else
                 {
@@ -79,7 +79,7 @@ namespace Logic
                     }
                 }
 
-            return prefix + String.Format(resultFormat, arg);
+            return prefix + ConvertToHex(ulong.Parse(arg.ToString()), hexFormat);//String.Format(resultFormat, arg);
         }
 
         private string HandleOtherFormats(string format, object arg)
@@ -90,6 +90,20 @@ namespace Logic
                 return arg.ToString();
             else
                 return String.Empty;
+        }
+
+        private string ConvertToHex(ulong value, string format)
+        {
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+            string result = "";
+
+            do
+            {
+                result += format == "H" ? Char.ToUpper(digits[value % 16]) : digits[value % 16];
+                value /= 16;
+            } while (value != 0);
+
+            return new string(result.Reverse().ToArray());
         }
     }
 }
