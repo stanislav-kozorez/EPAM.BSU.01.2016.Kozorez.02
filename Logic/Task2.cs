@@ -10,46 +10,31 @@ namespace Logic
     public static class Task2
     {
         private static Stopwatch timer = new Stopwatch();
-        private delegate int EuclidMethodChoiceDel(int a, int b); 
-        private static Dictionary<string, EuclidMethodChoiceDel> EuclidianMethods;
-
-        static Task2()
-        {
-            EuclidianMethods = new Dictionary<string, EuclidMethodChoiceDel>()
-            {
-                {"Not binary",  GCDImplementation},
-                {"Binary", BinaryGCDImplementation}
-            };
-        }
+        private delegate int EuclidianMethodDel(int a, int b); 
 
         public static int GCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
-            return EuclidianCallWith2Params(out elapsedMilliseconds, "Not binary", firstValue, secondValue);
+            return EuclidianCall(out elapsedMilliseconds, GCDImplementation, firstValue, secondValue);
         }
 
         public static int GCD(out long elapsedMilliseconds, int firstValue, int secondValue, int thirdValue)
         {
-            return EuclidianCallWith3Params(out elapsedMilliseconds, "Not binary", firstValue, secondValue, thirdValue);
+            return EuclidianCall(out elapsedMilliseconds, GCDImplementation, firstValue, secondValue, thirdValue);
         }
 
         public static int GCD(out long elapsedMilliseconds, params int[] values)
         {
-            return EuclidianCallWithParams(out elapsedMilliseconds, "Not binary", values);
+            return EuclidianCall(out elapsedMilliseconds, GCDImplementation, values);
         }
 
         private static int GCDImplementation(int firstValue, int secondValue)
         {
-            if (firstValue == 0 && secondValue == 0)
-                throw new ArgumentException("Unable to find the GCD of zero values");
-            if (firstValue == 0)
-                return secondValue;
-            if (secondValue == 0)
-                return firstValue;
-            if (firstValue == secondValue)
-                return firstValue;
-            if (firstValue == 1 || secondValue == 1)
-                return 1;
-
+            int result = 0;
+            bool validResult = true;
+            
+            result = CheckValues(firstValue, secondValue, ref validResult);
+            if (validResult)
+                return result;
             while (firstValue != secondValue)
             {
                 if (firstValue > secondValue)
@@ -62,33 +47,27 @@ namespace Logic
 
         public static int BinaryGCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
-            return EuclidianCallWith2Params(out elapsedMilliseconds, "Binary", firstValue, secondValue);
+            return EuclidianCall(out elapsedMilliseconds, BinaryGCDImplementation, firstValue, secondValue);
         }
 
         public static int BinaryGCD(out long elapsedMilliseconds, int firstValue, int secondValue, int thirdValue)
         {
-            return EuclidianCallWith3Params(out elapsedMilliseconds, "Binary", firstValue, secondValue, thirdValue);            
+            return EuclidianCall(out elapsedMilliseconds, BinaryGCDImplementation, firstValue, secondValue, thirdValue);            
         }
 
         public static int BinaryGCD(out long elapsedMilliseconds, params int[] values)
         {
-            return EuclidianCallWithParams(out elapsedMilliseconds, "Binary", values);            
+            return EuclidianCall(out elapsedMilliseconds, BinaryGCDImplementation, values);            
         }
 
         private static int BinaryGCDImplementation(int firstValue, int secondValue)
         {
             int result = 0;
+            bool validResult = true;
 
-            if (firstValue == 0 && secondValue == 0)
-                throw new ArgumentException("Unable to find the GCD of zero values");
-            if (firstValue == 0)
-                return secondValue;
-            if (secondValue == 0)
-                return firstValue;
-            if (firstValue == secondValue)
-                return firstValue;
-            if (firstValue == 1 || secondValue == 1)
-                return 1;
+            result = CheckValues(firstValue, secondValue, ref validResult);
+            if (validResult)
+                return result;
             if (firstValue % 2 == 0 && secondValue % 2 == 0)
                 result = 2 * BinaryGCDImplementation(firstValue / 2, secondValue / 2);
             if (firstValue % 2 == 0 && secondValue % 2 == 1)
@@ -104,33 +83,36 @@ namespace Logic
             return result;
         }
 
-        private static int EuclidianCallWith2Params(out long elapsedMilliseconds, string method, int firstValue, int secondValue)
+        private static int CheckValues(int firstValue, int secondValue, ref bool validResult)
+        {
+            if (firstValue == 0 && secondValue == 0)
+                throw new ArgumentException("Unable to find the GCD of zero values");
+            if (firstValue == 0)
+                return secondValue;
+            if (secondValue == 0)
+                return firstValue;
+            if (firstValue == secondValue)
+                return firstValue;
+            if (firstValue == 1 || secondValue == 1)
+                return 1;
+            validResult = false;
+            return 0;
+        }
+
+        private static int EuclidianCall(out long elapsedMilliseconds, EuclidianMethodDel method, int firstValue, int secondValue, int thirdValue = 0)
         {
             int result = 0;
             elapsedMilliseconds = 0;
 
             timer.Restart();
-            result = EuclidianMethods[method](Math.Abs(firstValue), Math.Abs(secondValue));
+            result = method(method(Math.Abs(firstValue), Math.Abs(secondValue)), Math.Abs(thirdValue));
             timer.Stop();
             elapsedMilliseconds = timer.ElapsedMilliseconds;
 
             return result;
         }
 
-        public static int EuclidianCallWith3Params(out long elapsedMilliseconds, string method,int firstValue, int secondValue, int thirdValue)
-        {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            timer.Restart();
-            result = EuclidianMethods[method](EuclidianMethods[method](Math.Abs(firstValue), Math.Abs(secondValue)), Math.Abs(thirdValue));
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
-        }
-
-        private static int EuclidianCallWithParams(out long elapsedMilliseconds, string method, params int[] values)
+        private static int EuclidianCall(out long elapsedMilliseconds, EuclidianMethodDel method, params int[] values)
         {
             int result = 0;
             elapsedMilliseconds = 0;
@@ -143,7 +125,7 @@ namespace Logic
             result = Math.Abs(values[0]);
             for (int i = 1; i < values.Length; i++)
             {
-                result = EuclidianMethods[method](result, Math.Abs(values[i]));
+                result = method(result, Math.Abs(values[i]));
             }
             timer.Stop();
             elapsedMilliseconds = timer.ElapsedMilliseconds;
