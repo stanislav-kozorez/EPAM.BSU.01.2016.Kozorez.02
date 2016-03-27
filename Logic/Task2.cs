@@ -10,53 +10,31 @@ namespace Logic
     public static class Task2
     {
         private static Stopwatch timer = new Stopwatch();
+        private delegate int EuclidMethodChoiceDel(int a, int b); 
+        private static Dictionary<string, EuclidMethodChoiceDel> EuclidianMethods;
 
-        #region Euclidean algorithm
+        static Task2()
+        {
+            EuclidianMethods = new Dictionary<string, EuclidMethodChoiceDel>()
+            {
+                {"Not binary",  GCDImplementation},
+                {"Binary", BinaryGCDImplementation}
+            };
+        }
+
         public static int GCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            timer.Restart();
-            result = GCDImplementation(Math.Abs(firstValue), Math.Abs(secondValue));
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWith2Params(out elapsedMilliseconds, "Not binary", firstValue, secondValue);
         }
 
         public static int GCD(out long elapsedMilliseconds, int firstValue, int secondValue, int thirdValue)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            timer.Restart();
-            result = GCDImplementation(GCDImplementation(Math.Abs(firstValue), Math.Abs(secondValue)), Math.Abs(thirdValue));
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWith3Params(out elapsedMilliseconds, "Not binary", firstValue, secondValue, thirdValue);
         }
 
         public static int GCD(out long elapsedMilliseconds, params int[] values)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            if (values == null)
-                throw new ArgumentNullException($"parameter {nameof(values)} is null");
-            if (values.Length < 2)
-                throw new ArgumentException("There's lack of parameters");
-            timer.Restart();
-            result = Math.Abs(values[0]);
-            for (int i = 1; i < values.Length; i++)
-            {
-                result = GCDImplementation(result, Math.Abs(values[i]));
-            }
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWithParams(out elapsedMilliseconds, "Not binary", values);
         }
 
         private static int GCDImplementation(int firstValue, int secondValue)
@@ -81,55 +59,20 @@ namespace Logic
             }
             return firstValue;
         }
-        #endregion
-
-        #region Binary Euclidean algorithm
 
         public static int BinaryGCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            timer.Restart();
-            result = BinaryGCDImplementation(Math.Abs(firstValue), Math.Abs(secondValue));
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWith2Params(out elapsedMilliseconds, "Binary", firstValue, secondValue);
         }
 
         public static int BinaryGCD(out long elapsedMilliseconds, int firstValue, int secondValue, int thirdValue)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            timer.Restart();
-            result = BinaryGCDImplementation(BinaryGCDImplementation(Math.Abs(firstValue), Math.Abs(secondValue)), Math.Abs(thirdValue));
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWith3Params(out elapsedMilliseconds, "Binary", firstValue, secondValue, thirdValue);            
         }
 
         public static int BinaryGCD(out long elapsedMilliseconds, params int[] values)
         {
-            int result = 0;
-            elapsedMilliseconds = 0;
-
-            if (values == null)
-                throw new ArgumentNullException($"parameter {nameof(values)} is null");
-            if (values.Length < 2)
-                throw new ArgumentException("There's lack of parameters");
-            timer.Restart();
-            result = Math.Abs(values[0]);
-            for (int i = 1; i < values.Length; i++)
-            {
-                result = BinaryGCDImplementation(result, Math.Abs(values[i]));
-            }
-            timer.Stop();
-            elapsedMilliseconds = timer.ElapsedMilliseconds;
-
-            return result;
+            return EuclidianCallWithParams(out elapsedMilliseconds, "Binary", values);            
         }
 
         private static int BinaryGCDImplementation(int firstValue, int secondValue)
@@ -161,7 +104,51 @@ namespace Logic
             return result;
         }
 
+        private static int EuclidianCallWith2Params(out long elapsedMilliseconds, string method, int firstValue, int secondValue)
+        {
+            int result = 0;
+            elapsedMilliseconds = 0;
 
-        #endregion
+            timer.Restart();
+            result = EuclidianMethods[method](Math.Abs(firstValue), Math.Abs(secondValue));
+            timer.Stop();
+            elapsedMilliseconds = timer.ElapsedMilliseconds;
+
+            return result;
+        }
+
+        public static int EuclidianCallWith3Params(out long elapsedMilliseconds, string method,int firstValue, int secondValue, int thirdValue)
+        {
+            int result = 0;
+            elapsedMilliseconds = 0;
+
+            timer.Restart();
+            result = EuclidianMethods[method](EuclidianMethods[method](Math.Abs(firstValue), Math.Abs(secondValue)), Math.Abs(thirdValue));
+            timer.Stop();
+            elapsedMilliseconds = timer.ElapsedMilliseconds;
+
+            return result;
+        }
+
+        private static int EuclidianCallWithParams(out long elapsedMilliseconds, string method, params int[] values)
+        {
+            int result = 0;
+            elapsedMilliseconds = 0;
+
+            if (values == null)
+                throw new ArgumentNullException($"parameter {nameof(values)} is null");
+            if (values.Length < 2)
+                throw new ArgumentException("There's lack of parameters");
+            timer.Restart();
+            result = Math.Abs(values[0]);
+            for (int i = 1; i < values.Length; i++)
+            {
+                result = EuclidianMethods[method](result, Math.Abs(values[i]));
+            }
+            timer.Stop();
+            elapsedMilliseconds = timer.ElapsedMilliseconds;
+
+            return result;
+        }
     }
 }
