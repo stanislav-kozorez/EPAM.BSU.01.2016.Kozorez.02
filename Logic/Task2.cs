@@ -10,8 +10,9 @@ namespace Logic
     public static class Task2
     {
         private static Stopwatch timer = new Stopwatch();
-        private delegate int EuclidianMethodDel(int a, int b); 
+        private delegate int EuclidianMethodDel(int a, int b);
 
+        #region Public methods
         public static int GCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
             return EuclidianCall(out elapsedMilliseconds, GCDImplementation, firstValue, secondValue);
@@ -27,24 +28,6 @@ namespace Logic
             return EuclidianCall(out elapsedMilliseconds, GCDImplementation, values);
         }
 
-        private static int GCDImplementation(int firstValue, int secondValue)
-        {
-            int result = 0;
-            bool validResult = true;
-            
-            result = CheckValues(firstValue, secondValue, ref validResult);
-            if (validResult)
-                return result;
-            while (firstValue != secondValue)
-            {
-                if (firstValue > secondValue)
-                    firstValue = firstValue - secondValue;
-                else
-                    secondValue = secondValue - firstValue;
-            }
-            return firstValue;
-        }
-
         public static int BinaryGCD(out long elapsedMilliseconds, int firstValue, int secondValue)
         {
             return EuclidianCall(out elapsedMilliseconds, BinaryGCDImplementation, firstValue, secondValue);
@@ -58,6 +41,27 @@ namespace Logic
         public static int BinaryGCD(out long elapsedMilliseconds, params int[] values)
         {
             return EuclidianCall(out elapsedMilliseconds, BinaryGCDImplementation, values);            
+        }
+
+        #endregion
+
+        #region Private methods
+        private static int GCDImplementation(int firstValue, int secondValue)
+        {
+            int result = 0;
+            bool validResult = true;
+
+            result = CheckValues(firstValue, secondValue, ref validResult);
+            if (validResult)
+                return result;
+            while (firstValue != secondValue)
+            {
+                if (firstValue > secondValue)
+                    firstValue = firstValue - secondValue;
+                else
+                    secondValue = secondValue - firstValue;
+            }
+            return firstValue;
         }
 
         private static int BinaryGCDImplementation(int firstValue, int secondValue)
@@ -132,5 +136,7 @@ namespace Logic
 
             return result;
         }
+
+        #endregion
     }
 }
